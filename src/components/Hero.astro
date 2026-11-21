@@ -1,0 +1,41 @@
+---
+import { hero, site } from '../data/site';
+import Logo from './Logo.astro';
+import Contours from './Contours.astro';
+import Forest from './Forest.astro';
+import Button from './Button.astro';
+---
+<section class="hero bg-olive" aria-labelledby="hero-title">
+  <Contours color="var(--c-olive-deep)" opacity={0.7} />
+  <div class="container inner">
+    <Logo class="hero-logo" />
+    <h1 id="hero-title" class="claim">{hero.claim}</h1>
+    <p class="sub">{hero.sub}</p>
+    <div class="actions">
+      <Button href="/#kontakt" variant="primary" on="olive">{hero.ctaPrimary}</Button>
+      <Button href={`tel:${site.phoneHref}`} variant="secondary" on="olive">{hero.ctaSecondary}</Button>
+    </div>
+  </div>
+  <div class="forest-wrap">
+    <Forest color="var(--c-olive-deep)" height="clamp(6rem, 17vw, 13rem)" class="forest-back" />
+    <Forest color="var(--c-lime)" height="clamp(3.5rem, 10vw, 8rem)" class="forest-front" />
+  </div>
+</section>
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(100svh, 52rem);
+    display: flex;
+    align-items: center;
+    padding-top: calc(var(--header-h) + 2rem);
+    padding-bottom: clamp(9rem, 22vw, 15rem);
+  }
+  .inner { position: relative; z-index: 1; }
+  :global(.hero-logo) { width: min(100%, 38rem); margin-bottom: 2.5rem; }
+  .claim { max-width: 20ch; color: #fff; }
+  .sub { max-width: 40rem; font-size: 1.15rem; color: var(--c-muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .forest-wrap { position: absolute; inset: auto 0 -1px 0; z-index: 1; }
+  .forest-wrap :global(.forest-front) { position: absolute; bottom: 0; left: 0; }
+</style>

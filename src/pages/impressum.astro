@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Impressum – ROTH Holz Service" description="Impressum und Offenlegung nach ECG, MedienG und GewO.">
+  <section class="legal">
+    <div class="container">
+      <h1>Impressum</h1>
+      <p><span class="todo">Platzhalter – Angaben vor Veröffentlichung prüfen und vervollständigen (am besten rechtlich prüfen lassen).</span></p>
+
+      <h2>Offenlegung nach § 5 ECG, § 63 GewO und § 25 MedienG</h2>
+      <p>
+        <strong>{site.owner}</strong><br />
+        Unternehmensgegenstand: Forstdienstleistungen (Holzschlägerung, Bringung, Aufforstung, Trüffelplantagen) <span class="todo">[bitte bestätigen]</span><br />
+        {site.address.street}<br />
+        {site.address.zip} {site.address.city}, Österreich
+      </p>
+      <p>
+        Telefon: <span class="todo">{site.phone}</span><br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        Web: {site.domain}
+      </p>
+
+      <h2>Unternehmensangaben</h2>
+      <p>
+        Rechtsform: <span class="todo">[z. B. Einzelunternehmen]</span><br />
+        UID-Nummer: <span class="todo">[ATU XXXXXXXX, falls vorhanden]</span><br />
+        Firmenbuchnummer / -gericht: <span class="todo">[falls eingetragen]</span><br />
+        Mitglied der: <span class="todo">[Wirtschaftskammer Steiermark, Fachgruppe …]</span><br />
+        Anwendbare Rechtsvorschriften: <span class="todo">[Gewerbeordnung: www.ris.bka.gv.at]</span><br />
+        Aufsichts-/Gewerbebehörde: <span class="todo">[Bezirkshauptmannschaft …]</span>
+      </p>
+
+      <h2>Grundlegende Richtung (Medieninhaber, § 25 MedienG)</h2>
+      <p>Information über die Leistungen des Unternehmens. <span class="todo">[ggf. anpassen]</span></p>
+
+      <h2>Streitbeilegung</h2>
+      <p>Verbraucher können Beschwerden an die Online-Streitbeilegungsstelle der EU richten. <span class="todo">[Hinweis prüfen/aktualisieren]</span></p>
+
+      <h2>Haftung für Inhalte und Links</h2>
+      <p><span class="todo">[Haftungsausschluss-Text einfügen oder streichen]</span></p>
+
+      <h2>Urheberrecht</h2>
+      <p>Die Inhalte dieser Website unterliegen dem Urheberrecht. <span class="todo">[Fotonachweise ergänzen]</span></p>
+    </div>
+  </section>
+</Base>

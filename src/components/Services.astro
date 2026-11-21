@@ -1,0 +1,26 @@
+---
+import { services } from '../data/site';
+import Icon from './Icon.astro';
+---
+<section id="leistungen" class="section bg-lime" aria-labelledby="leistungen-title">
+  <div class="container">
+    <p class="eyebrow">Was wir tun</p>
+    <h2 id="leistungen-title">Leistungen</h2>
+    <ul class="grid">
+      {services.map((s) => (
+        <li class="card">
+          <Icon name={s.icon} class="icon" />
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .grid { list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+  .card { background: var(--c-olive); color: #fff; padding: 1.75rem; border-radius: var(--radius); }
+  .card :global(.icon) { color: var(--c-lime); width: 3rem; height: 3rem; margin-bottom: 1rem; }
+  .card h3 { color: var(--c-lime); }
+  .card p { margin: 0; color: var(--c-muted); }
+</style>

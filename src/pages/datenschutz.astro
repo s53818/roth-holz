@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Datenschutzerklärung – ROTH Holz Service" description="Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO.">
+  <section class="legal">
+    <div class="container">
+      <h1>Datenschutzerklärung</h1>
+      <p><span class="todo">Platzhalter – Gerüst nach DSGVO/DSG. Vor Veröffentlichung prüfen und vervollständigen (am besten rechtlich prüfen lassen).</span></p>
+
+      <h2>1. Verantwortlicher</h2>
+      <p>
+        {site.owner}, {site.address.street}, {site.address.zip} {site.address.city}, Österreich<br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>, Telefon: <span class="todo">{site.phone}</span>
+      </p>
+
+      <h2>2. Hosting und Server-Logfiles</h2>
+      <p>Beim Aufruf dieser Website verarbeitet der Server technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, aufgerufene Seite). <span class="todo">[Hosting-Anbieter, Speicherdauer, Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO ergänzen]</span></p>
+
+      <h2>3. Kontaktaufnahme / Kontaktformular</h2>
+      <p>Wenn Sie uns über das Formular oder per E-Mail kontaktieren, verarbeiten wir Name, E-Mail-Adresse, optional Telefonnummer und Ihre Nachricht zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b bzw. lit. a DSGVO). <span class="todo">[Speicherdauer, Empfänger/Mailanbieter ergänzen, sobald der Mailversand angebunden ist]</span></p>
+
+      <h2>4. Cookies, Tracking und externe Dienste</h2>
+      <p>Diese Website verwendet keine Cookies, kein Tracking und lädt keine Inhalte von externen Servern. Schriften werden lokal ausgeliefert. <span class="todo">[bei Änderungen anpassen]</span></p>
+
+      <h2>5. Ihre Rechte</h2>
+      <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Beschwerden richten Sie an die österreichische Datenschutzbehörde, Barichgasse 40–42, 1030 Wien, www.dsb.gv.at.</p>
+
+      <h2>6. Stand</h2>
+      <p><span class="todo">[Datum]</span></p>
+    </div>
+  </section>
+</Base>

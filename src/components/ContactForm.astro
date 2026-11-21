@@ -1,0 +1,155 @@
+---
+import { actions, isInputError } from 'astro:actions';
+import Button from './Button.astro';
+
+interface Props {
+  /** Ergebnis der Action (nur auf der serverseitig gerenderten Seite /kontakt) */
+  result?: Awaited<ReturnType<typeof Astro.getActionResult<typeof actions.contact>>>;
+  /** Eingegebene Werte zum Wiederbefüllen */
+  values?: Record<string, string>;
+}
+const { result, values = {} } = Astro.props;
+const fieldErrors = result?.error && isInputError(result.error) ? result.error.fields : {};
+const err = (k: string) => (fieldErrors as Record<string, string[] | undefined>)[k]?.[0];
+const success = Boolean(result && !result.error);
+const generalError = result?.error && !isInputError(result.error) ? result.error.message : undefined;
+const formError = result?.error && isInputError(result.error) ? 'Bitte prüfen Sie die markierten Felder.' : generalError;
+---
+<form
+  id="kontaktformular"
+  class="form"
+  method="POST"
+  action={`/kontakt${actions.contact}`}
+  novalidate
+>
+  <div id="form-status" class="status" role="status" aria-live="polite">
+    {success && <p class="msg ok">Vielen Dank! Ihre Nachricht wurde übermittelt. Wir melden uns bald bei Ihnen.</p>}
+    {formError && <p class="msg bad">{formError}</p>}
+  </div>
+
+  {!success && (<>
+    <div class="field">
+      <label for="cf-name">Name *</label>
+      <input id="cf-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="100"
+        value={values.name ?? ''} aria-invalid={err('name') ? 'true' : undefined} aria-describedby={err('name') ? 'err-name' : undefined} />
+      <p class="err" id="err-name">{err('name')}</p>
+    </div>
+    <div class="field">
+      <label for="cf-email">E-Mail *</label>
+      <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200"
+        value={values.email ?? ''} aria-invalid={err('email') ? 'true' : undefined} aria-describedby={err('email') ? 'err-email' : undefined} />
+      <p class="err" id="err-email">{err('email')}</p>
+    </div>
+    <div class="field">
+      <label for="cf-phone">Telefon (optional)</label>
+      <input id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"
+        value={values.phone ?? ''} aria-invalid={err('phone') ? 'true' : undefined} aria-describedby={err('phone') ? 'err-phone' : undefined} />
+      <p class="err" id="err-phone">{err('phone')}</p>
+    </div>
+    <div class="field">
+      <label for="cf-message">Nachricht *</label>
+      <textarea id="cf-message" name="message" rows="6" required minlength="10" maxlength="5000"
+        aria-invalid={err('message') ? 'true' : undefined} aria-describedby={err('message') ? 'err-message' : undefined}>{values.message ?? ''}</textarea>
+      <p class="err" id="err-message">{err('message')}</p>
+    </div>
+
+    {/* Honeypot: für Menschen und Screenreader unsichtbar */}
+    <div class="hp" aria-hidden="true">
+      <label for="cf-website">Bitte leer lassen</label>
+      <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="field check">
+      <input id="cf-privacy" name="privacy" type="checkbox" required checked={values.privacy === 'on'}
+        aria-invalid={err('privacy') ? 'true' : undefined} aria-describedby={err('privacy') ? 'err-privacy' : undefined} />
+      <label for="cf-privacy">Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu. *</label>
+      <p class="err" id="err-privacy">{err('privacy')}</p>
+    </div>
+
+    <Button type="submit" variant="primary" on="olive">Nachricht senden</Button>
+    <p class="hint">Felder mit * sind Pflichtfelder.</p>
+  </>)}
+</form>
+
+<style>
+  .form { display: grid; gap: 1.1rem; }
+  .field { display: grid; gap: 0.35rem; }
+  label { font-weight: 600; }
+  input[type='text'], input[type='email'], input[type='tel'], textarea {
+    width: 100%; font: inherit; color: var(--c-on-lime); background: #fff;
+    border: 2px solid transparent; border-radius: var(--radius); padding: 0.75rem 0.9rem;
+  }
+  input:focus-visible, textarea:focus-visible { outline: 3px solid var(--c-lime); outline-offset: 2px; }
+  [aria-invalid='true'] { border-color: #ff8a80 !important; }
+  .err { margin: 0; color: #ffb4ab; font-size: 0.9rem; min-height: 0; }
+  .err:empty { display: none; }
+  .check { grid-template-columns: auto 1fr; align-items: start; column-gap: 0.75rem; }
+  .check input { width: 1.3rem; height: 1.3rem; margin-top: 0.25rem; accent-color: var(--c-lime); }
+  .check label { font-weight: 400; }
+  .check a { color: var(--c-lime); }
+  .check .err { grid-column: 1 / -1; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .hint { margin: 0; font-size: 0.875rem; color: var(--c-muted); }
+  .msg { margin: 0; padding: 1rem 1.1rem; border-radius: var(--radius); font-weight: 600; }
+  .ok { background: var(--c-lime); color: var(--c-on-lime); }
+  .bad { background: #5b1f1a; color: #fff; border: 2px solid #ff8a80; }
+  .status:empty { display: none; }
+  .form :global(.btn) { justify-self: start; }
+  .form[data-busy='true'] :global(.btn) { opacity: 0.6; pointer-events: none; }
+</style>
+
+<script>
+  // Progressive Enhancement: mit JS wird ohne Seitenwechsel gesendet und die
+  // Rückmeldung direkt am Formular angezeigt. Ohne JS greift der POST auf /kontakt.
+  import { actions, isInputError } from 'astro:actions';
+
+  const form = document.getElementById('kontaktformular') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+  if (form && status) {
+    const clearErrors = () => {
+      form.querySelectorAll('.err').forEach((e) => (e.textContent = ''));
+      form.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+    };
+    const say = (text: string, kind: 'ok' | 'bad') => {
+      status.innerHTML = '';
+      const p = document.createElement('p');
+      p.className = `msg ${kind}`;
+      p.textContent = text;
+      status.append(p);
+      status.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+      status.innerHTML = '';
+      form.dataset.busy = 'true';
+      try {
+        const { data, error } = await actions.contact(new FormData(form));
+        if (error) {
+          if (isInputError(error)) {
+            for (const [field, msgs] of Object.entries(error.fields)) {
+              const input = form.querySelector(`[name="${field}"]`);
+              const out = document.getElementById(`err-${field}`);
+              if (input && out && msgs?.[0]) {
+                out.textContent = msgs[0];
+                input.setAttribute('aria-invalid', 'true');
+                input.setAttribute('aria-describedby', out.id);
+              }
+            }
+            say('Bitte prüfen Sie die markierten Felder.', 'bad');
+            form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+          } else {
+            say(error.message || 'Senden fehlgeschlagen. Bitte versuchen Sie es später erneut.', 'bad');
+          }
+        } else if (data) {
+          form.reset();
+          say('Vielen Dank! Ihre Nachricht wurde übermittelt. Wir melden uns bald bei Ihnen.', 'ok');
+        }
+      } catch {
+        say('Senden fehlgeschlagen. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.', 'bad');
+      } finally {
+        delete form.dataset.busy;
+      }
+    });
+  }
+</script>

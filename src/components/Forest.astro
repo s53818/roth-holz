@@ -1,0 +1,26 @@
+---
+/** Wald-Silhouette (Nadelbäume), kachelbar, Farbe über `color`/currentColor. */
+import forestUrl from '../assets/graphics/forest.svg?url';
+interface Props {
+  color?: string;
+  /** Höhe als CSS-Wert */
+  height?: string;
+  class?: string;
+}
+const { color = 'currentColor', height = 'clamp(5rem, 14vw, 10rem)', class: cls = '' } = Astro.props;
+---
+<div
+  class:list={['forest', cls]}
+  aria-hidden="true"
+  style={`--forest-url:url(${forestUrl});--forest-color:${color};--forest-h:${height}`}
+>
+</div>
+<style>
+  .forest {
+    height: var(--forest-h);
+    width: 100%;
+    background: var(--forest-color);
+    -webkit-mask: var(--forest-url) left bottom / auto 100% repeat-x;
+    mask: var(--forest-url) left bottom / auto 100% repeat-x;
+  }
+</style>

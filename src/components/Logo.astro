@@ -1,0 +1,37 @@
+---
+/**
+ * Logo „ROTH“ + „HOLZ / SERVICE“ als SVG.
+ * variant="lime":  Lime auf Grün   (Standard, für dunkle Flächen)
+ * variant="green": Grün auf Lime   (für Lime-Flächen)
+ * Schrift über --font-display (tokens.css); später durch Pfade ersetzbar.
+ */
+interface Props {
+  variant?: 'lime' | 'green';
+  class?: string;
+  title?: string;
+}
+const { variant = 'lime', class: cls = '', title = 'ROTH Holz Service' } = Astro.props;
+---
+<svg
+  class:list={['logo', `logo--${variant}`, cls]}
+  viewBox="0 0 330 64"
+  role="img"
+  aria-label={title}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title>{title}</title>
+  <text x="0" y="52" class="word" textLength="210" lengthAdjust="spacingAndGlyphs">ROTH</text>
+  <text x="226" y="26" class="sub" textLength="100" lengthAdjust="spacingAndGlyphs">HOLZ</text>
+  <text x="226" y="52" class="sub" textLength="100" lengthAdjust="spacingAndGlyphs">SERVICE</text>
+</svg>
+<style>
+  .logo {
+    fill: var(--c-lime);
+    height: auto;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+  .logo--green { fill: var(--c-olive-deep); }
+  .word { font-weight: 800; font-size: 62px; }
+  .sub { font-weight: 700; font-size: 25px; }
+</style>

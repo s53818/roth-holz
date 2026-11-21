@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Gallery from '../components/Gallery.astro';
+import Contact from '../components/Contact.astro';
+import { site } from '../data/site';
+---
+<Base
+  title={`${site.name} – Forstbetrieb in Preding, Steiermark`}
+  description="Holzschlägerung, Bringung, Aufforstung und Trüffelplantagen: ROTH Holz Service von Phillip Roth aus Preding in der Weststeiermark."
+  jsonLd
+>
+  <Hero />
+  <Services />
+  <About />
+  <Gallery />
+  <Contact />
+</Base>

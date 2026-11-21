@@ -1,0 +1,33 @@
+---
+import type { ServiceIcon } from '../data/site';
+interface Props { name: ServiceIcon; class?: string }
+const { name, class: cls = '' } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor"
+  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === 'saw' && (<>
+    {/* Baum mit Fällkerb */}
+    <path d="M24 4 L12 22 H18 L9 36 H39 L30 22 H36 Z" />
+    <path d="M24 36 V44" />
+    <path d="M20 30 L26 33" />
+  </>)}
+  {name === 'log' && (<>
+    {/* Gestapelte Stämme */}
+    <ellipse cx="14" cy="34" rx="6" ry="6" /><circle cx="14" cy="34" r="2" />
+    <ellipse cx="34" cy="34" rx="6" ry="6" /><circle cx="34" cy="34" r="2" />
+    <ellipse cx="24" cy="21" rx="6" ry="6" /><circle cx="24" cy="21" r="2" />
+    <path d="M4 42 H44" />
+  </>)}
+  {name === 'seedling' && (<>
+    <path d="M24 42 V24" />
+    <path d="M24 26 C24 16 16 10 7 10 C7 20 13 26 24 26 Z" />
+    <path d="M24 32 C24 22 32 16 41 16 C41 26 35 32 24 32 Z" />
+    <path d="M14 42 H34" />
+  </>)}
+  {name === 'truffle' && (<>
+    {/* Trüffelknolle mit Eiche */}
+    <path d="M8 38 C6 28 14 22 24 22 C34 22 42 28 40 38 C34 42 14 42 8 38 Z" />
+    <path d="M16 30 L18 32 M24 28 L26 30 M30 34 L32 36 M15 36 L17 38" />
+    <path d="M24 22 V12 M24 16 C20 16 17 13 17 9 C21 9 24 12 24 16 Z M24 14 C28 14 31 11 31 7 C27 7 24 10 24 14 Z" />
+  </>)}
+</svg>

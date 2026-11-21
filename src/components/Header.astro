@@ -1,0 +1,90 @@
+---
+import { nav, site } from '../data/site';
+import Logo from './Logo.astro';
+---
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand" aria-label={`${site.name} – Startseite`}>
+      <Logo class="brand-logo" />
+    </a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="main-nav" hidden>
+      <span class="sr-only">Menü</span>
+      <span class="burger-lines" aria-hidden="true"></span>
+    </button>
+    <nav id="main-nav" class="nav" aria-label="Hauptnavigation">
+      <ul>
+        {nav.map((item) => (<li><a href={item.href}>{item.label}</a></li>))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: color-mix(in srgb, var(--c-olive-deep) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  }
+  .bar { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  :global(.brand-logo) { width: 9.5rem; }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.25rem; }
+  .nav a {
+    display: block; padding: 0.6rem 0.9rem; text-decoration: none; font-weight: 600;
+    font-size: 0.95rem; border-radius: var(--radius);
+  }
+  .nav a:hover { color: var(--c-lime); }
+  .burger {
+    width: 2.75rem; height: 2.75rem; border: 0; background: transparent; color: var(--c-lime);
+    display: none; align-items: center; justify-content: center; cursor: pointer; border-radius: var(--radius);
+  }
+  .burger-lines, .burger-lines::before, .burger-lines::after {
+    display: block; width: 1.5rem; height: 3px; background: currentColor; border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .burger-lines { position: relative; }
+  .burger-lines::before, .burger-lines::after { content: ''; position: absolute; left: 0; }
+  .burger-lines::before { top: -8px; }
+  .burger-lines::after { top: 8px; }
+  .burger[aria-expanded='true'] .burger-lines { background: transparent; }
+  .burger[aria-expanded='true'] .burger-lines::before { transform: translateY(8px) rotate(45deg); }
+  .burger[aria-expanded='true'] .burger-lines::after { transform: translateY(-8px) rotate(-45deg); }
+
+  @media (max-width: 47.99rem) {
+    /* Ohne JS: Navigation bleibt als Zeile unter dem Logo sichtbar */
+    .site-header { height: auto; min-height: var(--header-h); }
+    .bar { flex-wrap: wrap; padding-block: 0.6rem; }
+    .nav { width: 100%; }
+    .nav ul { flex-wrap: wrap; }
+    :global(.js) .site-header { height: var(--header-h); }
+    :global(.js) .burger { display: inline-flex; }
+    :global(.js) .nav {
+      position: absolute; top: var(--header-h); left: 0; right: 0; width: auto;
+      background: var(--c-olive-deep); padding: 0.5rem var(--gutter) 1.25rem;
+      border-bottom: 1px solid rgb(255 255 255 / 0.12); display: none;
+    }
+    :global(.js) .nav.open { display: block; }
+    :global(.js) .nav ul { flex-direction: column; }
+    :global(.js) .nav a { padding: 0.9rem 0.5rem; font-size: 1.1rem; }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.burger');
+  const nav = document.getElementById('main-nav');
+  if (btn && nav) {
+    btn.hidden = false;
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('open', open);
+    };
+    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+    nav.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { set(false); btn.focus(); }
+    });
+  }
+</script>

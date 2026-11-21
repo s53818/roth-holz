@@ -1,0 +1,34 @@
+---
+import { site, contactSection } from '../data/site';
+import Contours from './Contours.astro';
+import ContactForm from './ContactForm.astro';
+---
+<section id="kontakt" class="section bg-olive" aria-labelledby="kontakt-title">
+  <Contours color="var(--c-olive-deep)" opacity={0.6} />
+  <div class="container wrap">
+    <div>
+      <p class="eyebrow">Schreiben Sie uns</p>
+      <h2 id="kontakt-title">{contactSection.title}</h2>
+      <p>{contactSection.intro}</p>
+      <address>
+        <strong>{site.owner}</strong><br />
+        {site.address.street}<br />
+        {site.address.zip} {site.address.city}<br /><br />
+        <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+      </address>
+    </div>
+    <div>
+      <ContactForm />
+      <p class="privacy">Informationen zur Verarbeitung Ihrer Daten finden Sie in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .wrap { display: grid; gap: 2.5rem; }
+  address { font-style: normal; font-size: 1.15rem; margin-top: 1.5rem; }
+  address a { color: var(--c-lime); }
+  .privacy { margin-top: 1rem; font-size: 0.9rem; color: var(--c-muted); }
+  .privacy a { color: var(--c-lime); }
+  @media (min-width: 52rem) { .wrap { grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; } }
+</style>

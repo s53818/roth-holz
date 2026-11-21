@@ -1,0 +1,48 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary';
+  /** Auf welchem Hintergrund der Button steht */
+  on?: 'olive' | 'lime';
+  type?: 'button' | 'submit';
+  class?: string;
+  [attr: string]: unknown;
+}
+const { href, variant = 'primary', on = 'olive', type = 'button', class: cls = '', ...rest } = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+<Tag
+  {...(href ? { href } : { type })}
+  class:list={['btn', `btn--${variant}`, `btn--on-${on}`, cls]}
+  {...rest}
+><slot /></Tag>
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.6rem;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn--primary.btn--on-olive { background: var(--c-lime); color: var(--c-on-lime); }
+  .btn--primary.btn--on-olive:hover { background: #fff; }
+  .btn--secondary.btn--on-olive { border-color: var(--c-white); color: var(--c-white); }
+  .btn--secondary.btn--on-olive:hover { background: var(--c-white); color: var(--c-on-lime); }
+  .btn--primary.btn--on-lime { background: var(--c-olive); color: var(--c-white); }
+  .btn--primary.btn--on-lime:hover { background: var(--c-olive-deep); }
+  .btn--secondary.btn--on-lime { border-color: var(--c-on-lime); color: var(--c-on-lime); }
+  .btn--secondary.btn--on-lime:hover { background: var(--c-on-lime); color: var(--c-lime); }
+  @media (prefers-reduced-motion: reduce) { .btn:hover { transform: none; } }
+</style>

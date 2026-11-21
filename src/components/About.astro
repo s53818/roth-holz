@@ -1,0 +1,26 @@
+---
+import { about } from '../data/site';
+import Contours from './Contours.astro';
+---
+<section id="ueber-uns" class="section bg-olive" aria-labelledby="about-title">
+  <Contours color="var(--c-olive-deep)" opacity={0.6} />
+  <div class="container wrap">
+    <div>
+      <p class="eyebrow">Der Betrieb</p>
+      <h2 id="about-title">{about.title}</h2>
+      <p class="lead">{about.lead}</p>
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+    <dl class="facts">
+      {about.facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
+    </dl>
+  </div>
+</section>
+<style>
+  .wrap { display: grid; gap: 2.5rem; }
+  .lead { font-size: 1.25rem; font-weight: 600; color: var(--c-lime); }
+  .facts { margin: 0; padding: 1.5rem; background: var(--c-olive-deep); border-radius: var(--radius); display: grid; gap: 1.25rem; align-self: start; }
+  dt { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-lime); }
+  dd { margin: 0.2rem 0 0; font-size: 1.1rem; }
+  @media (min-width: 52rem) { .wrap { grid-template-columns: 1.4fr 1fr; align-items: start; gap: 4rem; } }
+</style>

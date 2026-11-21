@@ -1,0 +1,32 @@
+---
+/**
+ * Höhenlinien-Muster. Die SVG (src/assets/graphics/contours.svg) nutzt
+ * stroke="currentColor"; hier wird sie als Maske verwendet, sodass die Linien
+ * die Farbe des Elternelements (`color`) bzw. der Prop `color` annehmen.
+ */
+import contoursUrl from '../assets/graphics/contours.svg?url';
+interface Props {
+  /** CSS-Farbe der Linien, Standard: currentColor */
+  color?: string;
+  opacity?: number;
+}
+const { color = 'currentColor', opacity = 0.35 } = Astro.props;
+---
+<div
+  class="contours"
+  aria-hidden="true"
+  style={`--contours-url:url(${contoursUrl});--contours-color:${color};--contours-opacity:${opacity}`}
+>
+</div>
+<style>
+  .contours {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--contours-color);
+    opacity: var(--contours-opacity);
+    -webkit-mask: var(--contours-url) center / cover no-repeat;
+    mask: var(--contours-url) center / cover no-repeat;
+  }
+</style>

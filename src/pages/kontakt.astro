@@ -1,0 +1,33 @@
+---
+/**
+ * Serverseitiger Fallback des Kontaktformulars für Browser ohne JavaScript.
+ * Das Formular auf der (vorgerenderten) Startseite sendet per POST hierher;
+ * diese Seite zeigt das Ergebnis direkt am Formular. Nicht indexiert.
+ */
+import { actions } from 'astro:actions';
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { contactSection } from '../data/site';
+
+export const prerender = false;
+
+const result = Astro.getActionResult(actions.contact);
+let values: Record<string, string> = {};
+if (Astro.request.method === 'POST' && result?.error) {
+  const fd = await Astro.request.clone().formData().catch(() => undefined);
+  if (fd) {
+    for (const k of ['name', 'email', 'phone', 'message', 'privacy']) {
+      const v = fd.get(k);
+      if (typeof v === 'string') values[k] = v;
+    }
+  }
+}
+---
+<Base title="Kontakt – ROTH Holz Service" description={contactSection.intro} noindex>
+  <section class="section bg-olive" style="padding-top: calc(var(--header-h) + 3rem); min-height: 70vh;">
+    <div class="container" style="max-width: 40rem;">
+      <h1>{contactSection.title}</h1>
+      <ContactForm result={result} values={values} />
+    </div>
+  </section>
+</Base>

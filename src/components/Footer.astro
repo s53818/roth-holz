@@ -1,0 +1,39 @@
+---
+import { site } from '../data/site';
+import Logo from './Logo.astro';
+import Forest from './Forest.astro';
+---
+<footer class="footer">
+  <div class="top"><Forest color="var(--c-olive-deep)" height="clamp(3rem, 8vw, 6rem)" /></div>
+  <div class="container grid">
+    <div>
+      <Logo class="flogo" />
+    </div>
+    <address>
+      {site.owner}<br />
+      {site.address.street}, {site.address.zip} {site.address.city}<br />
+      <a href={`mailto:${site.email}`}>{site.email}</a><br />
+      <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+    </address>
+    <nav aria-label="Rechtliches">
+      <ul>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="copy container">© {new Date().getFullYear()} {site.name}</p>
+</footer>
+<style>
+  .footer { background: var(--c-olive-deep); color: var(--c-muted); }
+  .top { background: var(--c-olive); }
+  .top :global(.forest) { margin-bottom: -1px; }
+  .grid { display: grid; gap: 2rem; padding-block: 3rem 1.5rem; }
+  :global(.flogo) { width: 11rem; }
+  address { font-style: normal; }
+  a { color: #fff; }
+  a:hover { color: var(--c-lime); }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .copy { padding-bottom: 2rem; font-size: 0.875rem; }
+  @media (min-width: 48rem) { .grid { grid-template-columns: 1.2fr 1.5fr 1fr; align-items: start; } }
+</style>
